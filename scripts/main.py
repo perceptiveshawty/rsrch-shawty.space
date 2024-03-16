@@ -1,0 +1,72 @@
+import logging
+import os
+import sys
+from datetime import datetime
+from dotenv import load_dotenv
+# from notion_client import Client
+from supabase import create_client
+# from tqdm import tqdm
+
+
+load_dotenv()
+supabase_url = os.getenv("SUPABASE_URL")
+supabase_key = os.getenv("SUPABASE_KEY")
+# notion_token = os.getenv("NOTION_TOKEN")
+papers_database_id = os.getenv("PAPERS_DATABASE_ID")
+links_database_id = os.getenv("LINKS_DATABASE_ID")
+
+supabase = create_client(supabase_url, supabase_key)
+logging.disable(sys.maxsize)
+# notion = Client(auth=notion_token)
+
+def insert_link(url: str, title: str):
+    data = {"url": url, "title": title}
+    response = supabase.table(links_database_id).insert(data).execute()
+    print(response)
+
+def insert_paper(**kwargs):
+    response = supabase.table(papers_database_id).insert(kwargs).execute()
+    print(response)
+
+# def insert_data(database_id, table_name, notion, supabase):
+#     start_cursor = None
+#     data_batch = []
+
+#     while True:
+#         response = notion.databases.query(database_id=database_id, start_cursor=start_cursor)
+#         for item in tqdm(response["results"]):
+#             data = {
+#                 "title": item["properties"]["Title"]["title"][0]["plain_text"],
+#                 "url": item["properties"]["URL"]["url"],
+#                 "notion_timestamp": item["created_time"],
+#             }
+
+#             if table_name == "papers":
+#                 data["date"] = item["properties"]["Date"]["date"]["start"],
+#                 data["authors"] = item["properties"]["Authors"]["rich_text"][0]["plain_text"]
+
+#             data_batch.append(data)
+
+#         supabase.table(table_name).upsert(data_batch).execute()
+#         data_batch = []
+
+#         if response["has_more"]:
+#             start_cursor = response["next_cursor"]
+#         else:
+#             break
+
+
+
+if __name__ == "__main__":
+    insert_paper(
+        url="http://arxiv.org/abs/2012.09816",
+        title="Towards Understanding Ensemble, Knowledge Distillation and Self-Distillation in Deep Learning",
+        authors="Zeyuan Allen-Zhu, Yuanzhi Li",
+        created_at="2023-05-31 13:01:45"
+    )
+    # insert_link("https://12factor.net/", "The Twelve-Factor App")
+    # print("Inserting papers into Supabase")
+    # insert_data(papers_database_id, "papers", notion, supabase)
+
+    # print("Inserting links into Supabase")
+    # insert_data(links_database_id, "links", notion, supabase)
