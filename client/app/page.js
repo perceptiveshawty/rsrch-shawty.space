@@ -10,6 +10,10 @@ const supabase = createClient(supabaseUrl, supabaseKey);
 export default function Home() {
   const [showPapers, setShowPapers] = useState(false);
 
+  const handleRedirect = () => {
+    window.location.href = 'https://perceptiveshawty.github.io'; // Replace with the desired URL
+  };
+
   return (
     <div>
       <div className="flex justify-center items-center fixed top-0 w-full space-x-4 py-6 border-b border-gray-200 bg-off-white">
@@ -30,6 +34,12 @@ export default function Home() {
           }}
         >
           Papers
+        </button>
+        <button
+          className="px-4 text-gray-900 font-medium group hover:text-indigo-600"
+          onClick={handleRedirect}
+        >
+          About
         </button>
       </div>
       {showPapers ? <Entries database="papers" supabase={supabase} /> : <Entries database="links" supabase={supabase} />}
