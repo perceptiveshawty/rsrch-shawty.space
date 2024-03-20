@@ -17,35 +17,6 @@ function Entry({ title, created, link, authors }) {
   );
 }
 
-// function Entry({ title, created, url, authors, abstract }) {
-//   const [showAbstract, setShowAbstract] = useState(false);
-//   const dateObj = new Date(created);
-//   const easternTime = dateObj.toLocaleString('en-US', { timeZone: 'America/New_York' });
-//   const date = easternTime.split(',')[0];
-//   const formattedDate = new Date(date).toISOString().split('T')[0];
-
-//   return (
-//     <div
-//       className="relative"
-//       onMouseEnter={() => setShowAbstract(true)}
-//       onMouseLeave={() => setShowAbstract(false)}
-//     >
-//       <a href={url} target="_blank" className="flex justify-between text-secondary py-1 group text-md">
-//         <div>
-//           <strong className="font-medium break-word sm:break-normal text-gray-900 group-hover:text-indigo-600 dark:text-gray-100 dark:group-hover:text-indigo-500">{title}</strong>
-//           {authors && <p className="text-sm text-gray-600">{authors}</p>}
-//         </div>
-//         <p className="font-berkeley whitespace-nowrap ml-4 sm:ml-12">{formattedDate}</p>
-//       </a>
-//       {abstract && showAbstract && (
-//         <div className="absolute left-0 mt-2 p-4 bg-white rounded shadow-lg border border-gray-200 z-10 max-w-md">
-//           <p className="text-sm text-gray-700">{abstract}</p>
-//         </div>
-//       )}
-//     </div>
-//   );
-// }
-
 export function Entries({ database, supabase }) {
   const [entries, setEntries] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
