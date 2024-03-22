@@ -32,7 +32,7 @@ if __name__ == '__main__':
         if item_timestamp < last_update_date:
             continue
 
-        if item['data']['itemType'] in {'preprint', 'conferencePaper', 'journalArticle', 'report'}:
+        if item['data']['itemType'] in {'preprint', 'conferencePaper', 'journalArticle', 'report', 'thesis'}:
             papers.append({
                 'url': item['data']['url'],
                 'title': item['data']['title'],
