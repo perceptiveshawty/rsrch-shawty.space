@@ -17,9 +17,10 @@ last_update_date = datetime.fromisoformat(os.getenv("LAST_UPDATE_DATE"))
 supabase = create_client(supabase_url, supabase_key)
 zotero = Zotero(library_id = zotero_id, library_type = 'user', api_key = zotero_key)
 
-def insert_data(batch: list[dict], table_id: str):
+def upsert_data(batch: list[dict], table_id: str):
+    global supabase
     for data in tqdm(batch):
-        response = supabase.table(table_id).insert(data).execute()
+        response = supabase.table(table_id).upsert(data).execute()
         print(response)
 
 if __name__ == '__main__':
@@ -30,6 +31,10 @@ if __name__ == '__main__':
 
         item_timestamp = datetime.fromisoformat(item['data']['dateAdded'].split('T')[0])
         if item_timestamp < last_update_date:
+            continue
+
+        if item['data']['url'] is None or item['data']['url'] == '':
+            print(item)
             continue
 
         if item['data']['itemType'] in {'preprint', 'conferencePaper', 'journalArticle', 'report', 'thesis'}:
@@ -48,8 +53,8 @@ if __name__ == '__main__':
                 'created_at': item_timestamp.strftime('%Y-%m-%d')
             })
 
-    insert_data(links, links_database_id)
-    insert_data(papers, papers_database_id)
+    upsert_data(links, links_database_id)
+    upsert_data(papers, papers_database_id)
 
     set_key('.env', 'LAST_UPDATE_DATE', date.today().strftime('%Y-%m-%d'))
 
