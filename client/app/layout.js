@@ -3,23 +3,23 @@ import { GoogleAnalytics } from "../components/GoogleAnalytics";
 
 export const metadata = {
   metadataBase: new URL('http://www.rsrch-shawty.space'),
-  title: 'rsrch shawty',
+  title: 'rsrch-shawty',
   description: 'Stream of my favorite papers and links.',
   openGraph: {
     type: 'website',
     url: 'https://www.rsrch-shawty.space',
-    site_name: 'rsrch shawty',
+    site_name: 'rsrch-shawty',
     images: [
       {
         url: 'https://www.rsrch-shawty.space/thumbnail.png',
-        alt: 'rsrch shawty homepage',
+        alt: 'rsrch-shawty homepage',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
     site: '@perceptivshawty',
-    title: 'rsrch shawty',
+    title: 'rsrch-shawty',
     description: 'Stream of my favorite papers and links.',
     image: 'https://www.rsrch-shawty.space/thumbnail.png'
   }

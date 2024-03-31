@@ -11,7 +11,7 @@ export default function Home() {
   const [showPapers, setShowPapers] = useState(false);
 
   const handleRedirect = () => {
-    window.location.href = 'https://perceptiveshawty.github.io'; // Replace with the desired URL
+    window.location.href = 'https://perceptiveshawty.github.io';
   };
 
   return (
