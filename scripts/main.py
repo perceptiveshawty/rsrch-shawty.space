@@ -34,7 +34,9 @@ if __name__ == '__main__':
             continue
 
         if item['data']['url'] is None or item['data']['url'] == '':
-            print(item)
+            print("----- FAILED -----")
+            print("\n \n \n", item, "\n \n \n")
+            print("----- FAILED -----")
             continue
 
         if item['data']['itemType'] in {'preprint', 'conferencePaper', 'journalArticle', 'report', 'thesis'}:
@@ -46,7 +48,7 @@ if __name__ == '__main__':
                 'created_at': item_timestamp.strftime('%Y-%m-%d')
             })
 
-        elif item['data']['itemType'] in {'webpage', 'blogPost'}:
+        elif item['data']['itemType'] in {'webpage', 'blogPost', 'presentation', 'document'}:
             links.append({
                 'url': item['data']['url'],
                 'title': item['data']['title'],
@@ -55,6 +57,5 @@ if __name__ == '__main__':
 
     upsert_data(links, links_database_id)
     upsert_data(papers, papers_database_id)
-
     set_key('.env', 'LAST_UPDATE_DATE', date.today().strftime('%Y-%m-%d'))
 
