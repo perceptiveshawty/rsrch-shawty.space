@@ -1,5 +1,4 @@
 import './globals.css'
-import { GoogleAnalytics } from "../components/GoogleAnalytics";
 
 export const metadata = {
   metadataBase: new URL('http://www.rsrch-shawty.space'),
@@ -32,7 +31,6 @@ export default function RootLayout({ children }) {
       <meta name="twitter:card" content="summary_large_image" />
       <meta name="twitter:creator" content="@perceptivshawty" />
       <body>
-        <GoogleAnalytics />
         {children}
       </body>
     </html>
