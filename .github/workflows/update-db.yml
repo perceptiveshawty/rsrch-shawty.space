@@ -23,6 +23,7 @@ jobs:
         pip install pyzotero python-dotenv supabase tqdm
 
     - name: Create .env file
+      working-directory: ./scripts
       run: |
         echo "SUPABASE_URL=${{ secrets.SUPABASE_URL }}" >> .env
         echo "SUPABASE_KEY=${{ secrets.SUPABASE_KEY }}" >> .env
@@ -33,6 +34,7 @@ jobs:
         echo "LAST_UPDATE_DATE=${{ secrets.LAST_UPDATE_DATE }}" >> .env
 
     - name: Run update script
+      working-directory: ./scripts
       run: python main.py
 
     - name: Update LAST_UPDATE_DATE in GitHub Secrets
