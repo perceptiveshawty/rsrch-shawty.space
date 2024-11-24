@@ -31,16 +31,8 @@ jobs:
         echo "ZOTERO_ID=${{ secrets.ZOTERO_ID }}" >> .env
         echo "PAPERS_DATABASE_ID=${{ secrets.PAPERS_DATABASE_ID }}" >> .env
         echo "LINKS_DATABASE_ID=${{ secrets.LINKS_DATABASE_ID }}" >> .env
-        echo "LAST_UPDATE_DATE=${{ secrets.LAST_UPDATE_DATE }}" >> .env
+        echo "LAST_UPDATE_DATE=$(date -d 'yesterday' '+%Y-%m-%d')" >> .env
 
     - name: Run update script
       working-directory: ./scripts
       run: python main.py
-
-    - name: Update LAST_UPDATE_DATE in GitHub Secrets
-      uses: hmanzur/actions-set-secret@v2.0.0
-      with:
-        name: 'LAST_UPDATE_DATE'
-        value: $(date +%Y-%m-%d)
-        repository: ${{ github.repository }}
-        token: ${{ secrets.REPO_ACCESS_TOKEN }}
