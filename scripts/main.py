@@ -24,13 +24,21 @@ def upsert_data(batch: list[dict], table_id: str):
         print(response)
 
 if __name__ == '__main__':
-    links, papers = [], []
 
-    items = zotero.top(limit=50)
+    links, papers = [], []
+    items = zotero.top(limit = 75)
     for item in tqdm(items):
 
-        item_timestamp = datetime.fromisoformat(item['data']['dateAdded'].split('T')[0])
-        if item_timestamp < last_update_date:
+        if len(item["data"]["collections"]) > 0:
+            continue
+
+        time_added = datetime.fromisoformat(item['data']['dateAdded'].split('T')[0])
+        try:
+            item_timestamp = datetime.fromisoformat(item['data']['accessDate'].split('T')[0])
+        except:
+            item_timestamp = time_added
+
+        if time_added.date() < last_update_date.date():
             continue
 
         if item['data']['url'] is None or item['data']['url'] == '':
@@ -48,7 +56,7 @@ if __name__ == '__main__':
                 'created_at': item_timestamp.strftime('%Y-%m-%d')
             })
 
-        elif item['data']['itemType'] in {'webpage', 'blogPost', 'presentation', 'document'}:
+        elif item['data']['itemType'] in {'webpage', 'blogPost', 'presentation', 'document', 'forumPost', 'software'}:
             links.append({
                 'url': item['data']['url'],
                 'title': item['data']['title'],

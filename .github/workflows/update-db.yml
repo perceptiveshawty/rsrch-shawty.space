@@ -1,0 +1,44 @@
+name: Upsert new links + papers
+
+on:
+  schedule:
+    - cron: '0 0 * * *'  # Runs at 00:00 UTC every day
+  workflow_dispatch:      # Allows manual trigger from GitHub UI
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install pyzotero python-dotenv supabase tqdm
+
+    - name: Create .env file
+      run: |
+        echo "SUPABASE_URL=${{ secrets.SUPABASE_URL }}" >> .env
+        echo "SUPABASE_KEY=${{ secrets.SUPABASE_KEY }}" >> .env
+        echo "ZOTERO_KEY=${{ secrets.ZOTERO_KEY }}" >> .env
+        echo "ZOTERO_ID=${{ secrets.ZOTERO_ID }}" >> .env
+        echo "PAPERS_DATABASE_ID=${{ secrets.PAPERS_DATABASE_ID }}" >> .env
+        echo "LINKS_DATABASE_ID=${{ secrets.LINKS_DATABASE_ID }}" >> .env
+        echo "LAST_UPDATE_DATE=${{ secrets.LAST_UPDATE_DATE }}" >> .env
+
+    - name: Run update script
+      run: python main.py
+
+    - name: Update LAST_UPDATE_DATE in GitHub Secrets
+      uses: hmanzur/actions-set-secret@v2.0.0
+      with:
+        name: 'LAST_UPDATE_DATE'
+        value: $(date +%Y-%m-%d)
+        repository: ${{ github.repository }}
+        token: ${{ secrets.REPO_ACCESS_TOKEN }}
