@@ -26,7 +26,7 @@ def upsert_data(batch: list[dict], table_id: str):
 if __name__ == '__main__':
 
     links, papers = [], []
-    items = zotero.top(limit = 75)
+    items = zotero.top(limit = 25)
     for item in tqdm(items):
 
         if len(item["data"]["collections"]) > 0:
